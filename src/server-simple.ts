@@ -53,60 +53,34 @@ app.post('/api/auth/register', (req, res) => {
   res.status(201).json({
     success: true,
     message: 'User registered successfully. Please verify your email.',
-    data: {
-      user: {
-        _id: '507f1f77bcf86cd799439011',
-        email,
-        firstName,
-        lastName,
-        role: 'buyer',
-        isEmailVerified: false,
-        preferences: {
-          notifications: true,
-          newsletter: false,
-          priceAlerts: true,
-        },
-        profile: {},
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      tokens: {
-        accessToken: 'mock-access-token-' + Date.now(),
-        refreshToken: 'mock-refresh-token-' + Date.now(),
-      },
-    },
   });
 });
 
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
   
+  // Mock validation
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+  }
+  
   // Mock successful login
-  res.status(200).json({
-    success: true,
+  const mockUser = {
+    id: Date.now().toString(),
+    email,
+    firstName: 'John',
+    lastName: 'Doe',
+    role: 'buyer',
+    isEmailVerified: true,
+  };
+  
+  const token = 'mock-jwt-token-' + Date.now();
+  
+  res.json({
     message: 'Login successful',
-    data: {
-      user: {
-        _id: '507f1f77bcf86cd799439011',
-        email,
-        firstName: 'John',
-        lastName: 'Doe',
-        role: 'buyer',
-        isEmailVerified: true,
-        preferences: {
-          notifications: true,
-          newsletter: false,
-          priceAlerts: true,
-        },
-        profile: {},
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      tokens: {
-        accessToken: 'mock-access-token-' + Date.now(),
-        refreshToken: 'mock-refresh-token-' + Date.now(),
-      },
-    },
+    user: mockUser,
+    token,
+    refreshToken: 'mock-refresh-token-' + Date.now(),
   });
 });
 
